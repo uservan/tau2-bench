@@ -58,7 +58,9 @@ class Tool(BaseTool):
     info: Dict = Field({}, description="Additional information of the Tool")
     """Additional information of the Tool."""
 
-    def __init__(self, func: Callable, use_short_desc: bool = False, **predefined: Any):
+    tool_type: str = Field("", description="The type of the Tool")
+
+    def __init__(self, func: Callable, use_short_desc: bool = False, tool_type: str = "unknown", **predefined: Any):
         """Create a tool from a function.
 
         Args:
@@ -77,6 +79,7 @@ class Tool(BaseTool):
         self.__name__ = name
         self.__signature__ = sig  # type: ignore
         self.__doc__ = doc  # overwrite the doc string
+        self.tool_type = tool_type
 
     @classmethod
     def parse_data(
@@ -182,7 +185,7 @@ class Tool(BaseTool):
         return self._func(*args, **kwargs)
 
 
-def as_tool(func: Callable, **kwargs: Any) -> Tool:
+def as_tool(func: Callable, tool_type: str = "unknown", **kwargs: Any) -> Tool:
     """Wrap a given function with additional predefined arguments into a Tool.
 
     This function allows converting a standard function into a 'Tool' by
@@ -219,4 +222,4 @@ def as_tool(func: Callable, **kwargs: Any) -> Tool:
         In this example, `move_disk` is encapsulated into a Tool with `env`
         predefined, so only `from_peg` and `to_peg` are required.
     """
-    return Tool(func=func, **kwargs)
+    return Tool(func=func, tool_type=tool_type, **kwargs)

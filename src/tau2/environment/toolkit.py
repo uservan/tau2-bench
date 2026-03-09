@@ -89,7 +89,15 @@ class ToolKitBase(metaclass=ToolKitType):
         # NOTE: as_tool needs to get the function (self.foo), not the `foo(self, ...)`
         # Otherwise, the `self` will exists in the arguments.
         # Therefore, it needs to be called with getattr(self, name)
-        return {name: as_tool(tool) for name, tool in self.tools.items()}
+        my_tools = dict()
+        for name, tool in self.tools.items():
+            my_tool_type = self.tool_type(name)
+            if my_tool_type is not None: my_tool_type = my_tool_type.name
+            else: my_tool_type = "unknown"
+            my_tools[name] = as_tool(tool, tool_type=my_tool_type)
+        return my_tools
+    
+         # return {name: as_tool(tool) for name, tool in self.tools.items()}
 
     def has_tool(self, tool_name: str) -> bool:
         """Check if a tool exists in the ToolKit."""

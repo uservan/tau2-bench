@@ -176,7 +176,6 @@ def to_litellm_messages(messages: list[Message]) -> list[dict]:
             litellm_messages.append({"role": "system", "content": message.content})
     return litellm_messages
 
-
 def generate(
     model: str,
     messages: list[Message],

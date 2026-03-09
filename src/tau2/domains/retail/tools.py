@@ -715,4 +715,7 @@ if __name__ == "__main__":
     from tau2.domains.retail.utils import RETAIL_DB_PATH
 
     retail = RetailTools(RetailDB.load(RETAIL_DB_PATH))
+    l = list(retail.get_tools().values())
+    print(l)
     print(retail.get_statistics())
+    # list(self.tools.get_tools().values())

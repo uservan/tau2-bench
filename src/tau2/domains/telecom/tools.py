@@ -774,4 +774,6 @@ if __name__ == "__main__":
     from tau2.domains.telecom.utils import TELECOM_DB_PATH
 
     telecom = TelecomTools(TelecomDB.load(TELECOM_DB_PATH))
+    l = list(telecom.get_tools().values())
+    print(l)
     print(telecom.get_statistics())
